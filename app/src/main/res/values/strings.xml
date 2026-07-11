@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">LuxtensionVision</string>
+    <string name="camera_settings_title">CAMERA INSTELLINGEN</string>
+    <string name="camera_brand">Camera merk</string>
+    <string name="camera_name">Camera naam</string>
+    <string name="camera_host">IP-adres / hostnaam</string>
+    <string name="camera_port">Poort</string>
+    <string name="camera_username">Gebruikersnaam</string>
+    <string name="camera_password">Wachtwoord</string>
+    <string name="camera_protocol">Protocol</string>
+    <string name="camera_rtsp_path">RTSP-pad</string>
+    <string name="camera_tls">TLS gebruiken</string>
+    <string name="camera_enabled">Camera ingeschakeld</string>
+    <string name="camera_test_connection">VERBINDING TESTEN</string>
+    <string name="camera_save">OPSLAAN</string>
+    <string name="camera_clear">WISSEN</string>
+    <string name="camera_show">Toon</string>
+    <string name="camera_hide">Verberg</string>
+    <string name="camera_not_configured">Geen camera geconfigureerd</string>
+    <string name="camera_not_connected">Camera niet verbonden</string>
+    <string name="camera_connected">Verbonden</string>
 </resources>
