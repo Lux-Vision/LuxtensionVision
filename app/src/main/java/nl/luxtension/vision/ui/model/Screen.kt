@@ -19,7 +19,12 @@ sealed class Screen(
     data object About : Screen("OVER", "OVER", "Luxtension Vision versie 0.2 foundation")
 
     companion object {
-        val bottomNavigation = listOf(Live, Thermal, Ai, Map, Recordings, Settings)
-        val sideMenu = listOf(Cameras, Thermal, Ai, Recordings, Cloud, Users, Vehicle, Language, About)
+        // Use computed properties instead of statically initialized lists. This avoids
+        // capturing null singleton instances during JVM class initialization.
+        val bottomNavigation: List<Screen>
+            get() = listOf(Live, Thermal, Ai, Map, Recordings, Settings)
+
+        val sideMenu: List<Screen>
+            get() = listOf(Cameras, Thermal, Ai, Recordings, Cloud, Users, Vehicle, Language, About)
     }
 }
