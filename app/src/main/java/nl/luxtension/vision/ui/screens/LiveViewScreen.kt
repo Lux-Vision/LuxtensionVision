@@ -97,10 +97,7 @@ fun LiveViewScreen() {
 
                     "INSTEL" -> SettingsScreen()
 
-                    "CAMERAS" -> SimpleScreen(
-                        "CAMERA'S",
-                        "Camera 1, Camera 2 en ONVIF voorbereid"
-                    )
+                    "CAMERAS" -> SettingsScreen()
 
                     "CLOUD" -> SimpleScreen(
                         "CLOUD",
