@@ -338,7 +338,7 @@ fun SideMenu(
         Spacer(modifier = Modifier.height(10.dp))
 
         listOf(
-            "CAMERAS" to "📷  CAMERA'S",
+            "INSTEL" to "📷  CAMERA'S",
             "THERM" to "🌡  THERM INST.",
             "AI" to "🤖  AI INST.",
             "FOTO" to "📁  OPNAMES",
