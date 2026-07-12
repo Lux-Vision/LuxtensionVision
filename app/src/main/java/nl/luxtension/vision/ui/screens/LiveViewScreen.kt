@@ -8,6 +8,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.res.stringResource
+import nl.luxtension.vision.R
+import nl.luxtension.vision.domain.model.CameraConnectionStatus
+import nl.luxtension.vision.ui.camera.CameraSettingsActions
+import nl.luxtension.vision.ui.camera.CameraSettingsScreen
+import nl.luxtension.vision.ui.viewmodel.CameraSettingsUiState
+import nl.luxtension.vision.ui.viewmodel.CameraSettingsViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,7 +28,8 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun LiveViewScreen() {
+fun LiveViewScreen(cameraViewModel: CameraSettingsViewModel = viewModel()) {
+    val cameraState by cameraViewModel.uiState.collectAsStateWithLifecycle()
     var activeScreen by remember { mutableStateOf("LIVE") }
     var menuOpen by remember { mutableStateOf(false) }
 
@@ -60,7 +70,7 @@ fun LiveViewScreen() {
             )
 
             Text(
-                text = "● VISION BOX ONLINE   |   CAMERA: NIET GEKOPPELD",
+                text = "● VISION BOX ONLINE   |   CAMERA: ${cameraState.savedDisplayName ?: "NIET GEKOPPELD"}",
                 color = Color.Green,
                 fontSize = 13.sp
             )
@@ -73,7 +83,7 @@ fun LiveViewScreen() {
                 contentAlignment = Alignment.Center
             ) {
                 when (activeScreen) {
-                    "LIVE" -> LiveContent()
+                    "LIVE" -> LiveContent(cameraState)
 
                     "THERM" -> SimpleScreen(
                         "THERMISCH BEELD",
@@ -95,7 +105,25 @@ fun LiveViewScreen() {
                         "Snapshots en video-opnames voorbereid"
                     )
 
-                    "INSTEL" -> SettingsScreen()
+                    "INSTEL" -> CameraSettingsScreen(
+                        state = cameraState,
+                        actions = CameraSettingsActions(
+                            onDisplayName = cameraViewModel::onDisplayNameChanged,
+                            onIp = cameraViewModel::onIpAddressChanged,
+                            onPort = cameraViewModel::onPortChanged,
+                            onUsername = cameraViewModel::onUsernameChanged,
+                            onPassword = cameraViewModel::onPasswordChanged,
+                            onRtsp = cameraViewModel::onRtspPathChanged,
+                            onTls = cameraViewModel::onUseTlsChanged,
+                            onEnabled = cameraViewModel::onEnabledChanged,
+                            onBrand = cameraViewModel::selectBrand,
+                            onProtocol = cameraViewModel::selectProtocol,
+                            onTogglePassword = cameraViewModel::togglePasswordVisibility,
+                            onTest = cameraViewModel::testConnection,
+                            onSave = cameraViewModel::saveConfiguration,
+                            onReset = cameraViewModel::resetForm,
+                        )
+                    )
 
                     "CAMERAS" -> SimpleScreen(
                         "CAMERA'S",
@@ -190,15 +218,19 @@ fun Header(
 }
 
 @Composable
-fun LiveContent() {
+fun LiveContent(cameraState: CameraSettingsUiState) {
     Text(
-        text = "WACHT OP CAMERABEELD",
-        color = Color.Gray,
+        text = when {
+            cameraState.savedDisplayName == null -> stringResource(R.string.camera_not_configured)
+            cameraState.connectionStatus == CameraConnectionStatus.Connected -> cameraState.savedDisplayName.orEmpty()
+            else -> stringResource(R.string.camera_not_connected)
+        },
+        color = if (cameraState.connectionStatus == CameraConnectionStatus.Connected) Color(0xFF43A047) else Color.Gray,
         fontSize = 28.sp
     )
 
     Text(
-        text = "CAMERA 1  |  3840×2160  |  25 FPS  |  OFFLINE",
+        text = "CAMERA 1  |  VIDEO PLACEHOLDER  |  ${cameraState.connectionStatus.name.uppercase()}",
         color = Color.Gray,
         fontSize = 12.sp,
         modifier = Modifier
