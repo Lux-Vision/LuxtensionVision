@@ -95,12 +95,7 @@ fun LiveViewScreen() {
                         "Snapshots en video-opnames voorbereid"
                     )
 
-                    "INSTEL" -> SettingsScreen()
-
-                    "CAMERAS" -> SimpleScreen(
-                        "CAMERA'S",
-                        "Camera 1, Camera 2 en ONVIF voorbereid"
-                    )
+                    "INSTEL", "CAMERAS" -> CameraSettingsScreen()
 
                     "CLOUD" -> SimpleScreen(
                         "CLOUD",
@@ -235,7 +230,7 @@ fun SimpleScreen(
 }
 
 @Composable
-fun SettingsScreen() {
+fun CameraSettingsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
