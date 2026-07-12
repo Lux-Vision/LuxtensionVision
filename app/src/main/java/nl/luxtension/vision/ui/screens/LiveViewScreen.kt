@@ -1,6 +1,9 @@
 package nl.luxtension.vision.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -25,6 +28,10 @@ fun LiveViewScreen() {
 
     var currentDate by remember { mutableStateOf("") }
     var currentTime by remember { mutableStateOf("") }
+
+    BackHandler(enabled = menuOpen) {
+        menuOpen = false
+    }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -138,6 +145,17 @@ fun LiveViewScreen() {
         }
 
         if (menuOpen) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.35f))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { menuOpen = false }
+                    )
+            )
+
             SideMenu(
                 onSelect = {
                     activeScreen = it
@@ -326,6 +344,11 @@ fun SideMenu(
             .fillMaxHeight()
             .width(260.dp)
             .background(Color(0xFF202020))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {}
+            )
             .verticalScroll(scrollState)
             .padding(12.dp)
     ) {
