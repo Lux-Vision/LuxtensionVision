@@ -6,6 +6,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import nl.luxtension.vision.domain.model.CameraConnectionStatus
@@ -40,6 +41,7 @@ class CameraSettingsViewModelTest {
         val vm = CameraSettingsViewModel()
         fillValid(vm)
         vm.testConnection()
+        runCurrent()
         assertEquals(CameraConnectionStatus.Testing, vm.uiState.value.connectionStatus)
         advanceUntilIdle()
         assertEquals(CameraConnectionStatus.Connected, vm.uiState.value.connectionStatus)
